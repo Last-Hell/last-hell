@@ -1,0 +1,24 @@
+[Server]
+Number=1
+MaxSubServer=0
+IP=0.0.0.0
+Port=4007
+
+[User DB]
+IP=127.0.0.1
+DBName=newproject_db_auth
+User=
+Password=
+
+[Auth DB]
+IP=127.0.0.1
+DBName=newproject_db_auth
+User=
+Password=
+
+[Billing Server]
+IP=0.0.0.0
+Port=0000
+
+[SHA256]
+Salt=phoohie1yaihooyaequae7PuiWoeNgahjieth3ru3yeeghaepahb7aeYaipe2we6zii6mai6uweig8siasheinoungeoyeiLohShi2xoh2xi8ooxee9ahpiehahc9Phe
