@@ -4,14 +4,15 @@ This Guide will prepare u to Compile the Last Chaos Client files e.g. NKSP.exe E
 
 ## Layout
 
-1. [INCLUDE]
-2. [EXECUTE_FOLDER]
-3. [Engine]
-4. [EntitesMP]
-5. [GameMP]
-6. [NKSP]
-7. [Shaders]
-8. [Common]
+1. [INCLUDE](#include)
+2. [EXECUTE_FOLDER](#execute_folder)
+3. [Engine](#engine)
+4. [EntitesMP](#entitiesmp)
+5. [GameMP](#gamemp)
+6. [NKSP](#nksp)
+7. [Shaders](#shaders)
+8. [Common](#common)
+9. [Final Words](#final-words)
 
 ## Include
 
