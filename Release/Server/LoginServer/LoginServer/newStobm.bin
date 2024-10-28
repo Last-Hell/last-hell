@@ -1,0 +1,43 @@
+[Server]
+No=1
+IP=0.0.0.0
+Port=0000
+AllowExternalIP=TRUE
+
+[User DB]
+IP=127.0.0.1
+DBName=newproject_db_auth
+User=
+Password=
+
+[Data DB]
+IP=127.0.0.1
+DBName=newproject_data
+User=
+Password=
+
+[Auth DB]
+IP=127.0.0.1
+DBName=newproject_db_auth
+User=
+Password=
+
+[Messenger Server]
+IP=0.0.0.0
+Port=4113
+
+[Connector Server]
+Count=1
+
+[Connector_0]
+Number=1
+MaxSubNumber=1
+IP=0.0.0.0
+Port=4007
+
+[Auto Block]
+Refresh=2
+MaxTry=7
+
+[SHA256]
+Salt=phoohie1yaihooyaequae7PuiWoeNgahjieth3ru3yeeghaepahb7aeYaipe2we6zii6mai6uweig8siasheinoungeoyeiLohShi2xoh2xi8ooxee9ahpiehahc9Phe

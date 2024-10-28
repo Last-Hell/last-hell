@@ -1,0 +1,127 @@
+# 64bit compiler 'CENTOS 6.10'
+
+
+1.curl https://www.getpagespeed.com/files/centos6-eol.repo --output /etc/yum.repos.d/CentOS-Base.repo
+
+2. curl https://www.getpagespeed.com/files/centos6-epel-eol.repo --output /etc/yum.repos.d/epel.repo
+
+3.yum update
+
+4.yum -y install centos-release-scl
+curl https://www.getpagespeed.com/files/centos6-scl-eol.repo --output /etc/yum.repos.d/CentOS-SCLo-scl.repo
+curl https://www.getpagespeed.com/files/centos6-scl-rh-eol.repo --output /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+
+
+cd /usr/local
+
+curl -o ccache/ccache-3.4.2.tar.gz https://www.samba.org/ftp/ccache/ccache-3.4.2.tar.gz  "must manually download and upload"
+
+curl -o Botan-1.10.17.tgz https://botan.randombit.net/releases/old/Botan-1.10.17.tgz
+
+curl -o apache-log4cxx-0.10.0.tar.gz http://archive.apache.org/dist/logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz
+
+wget  http://downloads.sourceforge.net/project/jsoncpp/jsoncpp/0.6.0-rc2/jsoncpp-src-0.6.0-rc2.tar.gz
+
+wget  https://www.sqlite.org/2018/sqlite-autoconf-3230100.tar.gz
+
+wget  https://curl.haxx.se/download/curl-7.59.0.tar.gz
+
+wget https://boostorg.jfrog.io/artifactory/main/release/1.65.1/source/boost_1_65_1.tar.gz
+
+tar xvzf ccache-3.4.2.tar.gz
+tar xvzf Botan-1.10.17.tgz
+tar xvzf apache-log4cxx-0.10.0.tar.gz
+tar xvzf jsoncpp-src-0.6.0-rc2.tar.gz
+tar xvzf sqlite-autoconf-3230100.tar.gz
+tar xvzf curl-7.59.0.tar.gz
+tar xvzf boost_1_65_1.tar.gz
+
+yum -y update
+yum -y install python-libs.i686
+yum -y install python python-devel nano libtool svn
+yum -y install gcc gcc-c++ glibc glibc-devel glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 libstdc++-devel
+yum -y install zlib-devel.i686 ncurses-devel.i686 subversion-devel.i686
+yum -y install libidn-devel.i686 openldap-devel.i686 openssl-devel.i686
+
+yum -y install expat-devel.i686 openldap-devel.i686
+yum -y install apr-devel.i686 apr-util-devel.i686
+yum -y install curl-devel
+yum -y install mysql mysql-devel.i686 
+
+export CFLAGS="-m32"
+export CC="gcc -m32"
+export CXX="g++ -m32"
+ln -s /usr/lib/libexpat.a /usr/local/lib
+
+cd /usr/local
+
+## ccache
+
+cd ccache-3.4.2
+./configure && make -j4 && make install
+
+cd ..
+
+## Botan library
+
+cd Botan-1.10.17
+
+./configure.py --disable-shared --includedir=../../usr/include --cpu=x86_32 --cc-bin='gcc -m32'   //libstdc++-devel.x86_64 needed to compile
+###### source edits
+ nano src/hash/gost_3411/gost_3411.cpp
+	#include <stdint.h>
+make -j4 && make install
+ln -s -d /usr/include/botan-1.10/botan /usr/include/
+
+cd ..
+## Apache log4cxx
+
+cd apache-log4cxx-0.10.0
+./configure --enable-shared=no --enable-static=yes LDFLAGS="-L/usr/lib"
+######################### source edits
+	# nano src/main/cpp/inputstreamreader.cpp
+	# nano src/main/cpp/socketoutputstream.cpp
+	# nano src/examples/cpp/console.cpp
+#include <stdio.h>
+#include <string.h>
+make -j4 && make install
+
+cd ..
+## jsoncpp
+cd jsoncpp-src-0.6.0-rc2
+cd src/lib_json/
+g++ -m32 -I../../include -O2 -c *.cpp
+ar rs libjsoncpp.a *.o
+cp libjsoncpp.a /usr/local/lib
+cp -R ../../include/json /usr/local/include
+
+cd ../../..
+## Sqlite-autoconf
+cd sqlite-autoconf-3230100
+./configure --enable-multilib && make -j4 && make install
+
+cd ..
+
+## curl
+cd curl-7.59.0
+./configure --enable-multilib --enable-shared=no --libdir=/usr/local/lib
+make -j4 && make install
+
+
+## Boost
+cd ..
+cd boost_1_65_1
+./bootstrap.sh
+./bjam -j4 --toolset=gcc --build-type=complete --layout=versioned link=static threading=multi install cxxflags=-m32
+ln -s -d /usr/local/boost_1_65_1/boost /usr/include/     
+
+
+
+(change to your boost current version(1_65_1))
+nano makefile.inc
+	CXX = ccache g++ -g -m32
+	BOOST_LIB_VER = -gcc44mt-1_65_1
+	
+lchttps.cpp "if you have issues with this file do this"
+add this to includes list
+#include <unistd.h>
